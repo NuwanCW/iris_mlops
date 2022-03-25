@@ -8,7 +8,10 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.preprocessing import LabelEncoder
+from config import config
+from config.config import logger
 from iris import data, eval, models, utils
+from numpyencoder import NumpyEncoder
 
 lr = 1e-2
 
@@ -147,7 +150,7 @@ class Trainer:
             if self.trial:
                 self.trial.report(val_loss, epoch)
                 if self.trial.should_prune():
-                    print("failure trials pruned!")
+                    logger.info("failure trials pruned!")
                     raise optuna.TrialPruned()
 
             # Early stoping
@@ -158,11 +161,11 @@ class Trainer:
             else:
                 _patience -= 1
             if not _patience:
-                print("Stopping early!")
+                logger.info("Stopping early!")
                 break
 
-            # to logging future
-            print(
+            # logging
+            logger.info(
                 f"Epoch: {epoch+1} | "
                 f"train_loss: {train_loss:.5f}, "
                 f"val_loss: {val_loss:.5f}, "
@@ -202,6 +205,9 @@ def train(params: Namespace = None, trial: optuna.trial._trial.Trial = None) -> 
     model = models.initialize_model(device=torch.device("cpu"))
 
     # Trainer module
+    logger.info(
+        f"Parameters: {json.dumps(params.__dict__, indent=2, cls=NumpyEncoder)}"
+    )
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode="min", factor=0.1, patience=5
@@ -251,14 +257,14 @@ def objective(params: Namespace, trial: optuna.trial._trial.Trial) -> float:
     params.lr = trial.suggest_loguniform("lr", 5e-5, 5e-4)
 
     # Train (can move some of these outside for efficiency)
-    print(f"\nTrial {trial.number}:")
-    print(json.dumps(trial.params, indent=2))
+    logger.info(f"\nTrial {trial.number}:")
+    logger.info(json.dumps(trial.params, indent=2))
     artifacts = train(params=params, trial=trial)
 
     # Set additional attributes
     params = artifacts["params"]
     performance = artifacts["performance"]
-    print(json.dumps(performance["overall"], indent=2))
+    logger.info(json.dumps(performance["overall"], indent=2))
     trial.set_user_attr("precision", performance["overall"]["precision"])
     trial.set_user_attr("recall", performance["overall"]["recall"])
     trial.set_user_attr("f1", performance["overall"]["f1"])

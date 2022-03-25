@@ -5,9 +5,9 @@
   "subset": null,
   "train_size": 0.7,
   "batch_size": 128,
-  "hidden_dim": 22,
-  "dropout_p": 0.7762229143340429,
-  "lr": 0.0003204917453444827,
+  "hidden_dim": 18,
+  "dropout_p": 0.3234824010142044,
+  "lr": 0.00012812683146894914,
   "num_epochs": 200,
   "patience": 10,
   "num_samples": 70

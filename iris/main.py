@@ -14,7 +14,8 @@ import optuna
 
 # import pandas as pd
 import torch
-import typer
+
+# import typer
 
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
@@ -22,6 +23,7 @@ from optuna.integration.mlflow import MLflowCallback
 from mlflow.tracking import MlflowClient
 import os
 from config import config
+from config.config import logger
 
 
 # # Ignore warning
@@ -56,12 +58,12 @@ def optimize(
     trials_df = trials_df.sort_values(["value"], ascending=False)
 
     # Best trial
-    print(f"Best value (f1): {study.best_trial.value}")
+    logger.info(f"Best value (f1): {study.best_trial.value}")
     params = {**params.__dict__, **study.best_trial.params}
     print(json.dumps(params, indent=2, cls=NumpyEncoder))
     print(f"Best value (f1): {study.best_trial.value}")
     utils.save_dict(params, params_fp, cls=NumpyEncoder)
-    print(json.dumps(params, indent=2, cls=NumpyEncoder))
+    logger.info(json.dumps(params, indent=2, cls=NumpyEncoder))
 
 
 def train_model(
@@ -87,7 +89,7 @@ def train_model(
 
         # Log metrics
         performance = artifacts["performance"]
-        print(json.dumps(performance["overall"], indent=2))
+        logger.info(json.dumps(performance["overall"], indent=2))
         print(json.dumps(performance["overall"], indent=2))
         metrics = {
             "precision": performance["overall"]["precision"],
@@ -117,18 +119,19 @@ def predict_tags(text, run_id):
     text = [[float(i) for i in t.split(",")] for t in [text]]
     prediction = predict.predict(texts=text, artifacts=artifacts)
     print(prediction)
+    logger.info(json.dumps(prediction, indent=2))
     return prediction
 
 
 def params(run_id):
     params = vars(load_artifacts(run_id=run_id, best_f1=False)["params"])
-    print(json.dumps(params, indent=2))
+    logger.info(json.dumps(params, indent=2))
     return params
 
 
 def performance(run_id):
     performance = load_artifacts(run_id=run_id, best_f1=False)["performance"]
-    print(json.dumps(performance, indent=2))
+    logger.info(json.dumps(performance, indent=2))
     return performance
 
 
@@ -182,4 +185,4 @@ def delete_experiment(experiment_name):
     client = mlflow.tracking.MlflowClient()
     experiment_id = client.get_experiment_by_name(experiment_name).experiment_id
     client.delete_experiment(experiment_id=experiment_id)
-    print(f"✅ Deleted experiment {experiment_name}!")
+    logger.info(f"✅ Deleted experiment {experiment_name}!")
