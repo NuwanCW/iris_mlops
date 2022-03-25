@@ -3,16 +3,19 @@ import os
 import tempfile
 import warnings
 from argparse import Namespace
+
 # from datetime import datetime
 from pathlib import Path
 from typing import Dict  # , Optional
 
 import mlflow
 import optuna
+
 # import pandas as pd
 import torch
 import typer
 from mlflow.tracking import MlflowClient
+
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
@@ -38,12 +41,8 @@ def optimize(
 
     # Optimize
     pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=5)
-    study = optuna.create_study(
-        study_name=study_name, direction="maximize", pruner=pruner
-    )
-    mlflow_callback = MLflowCallback(
-        tracking_uri=mlflow.get_tracking_uri(), metric_name="f1"
-    )
+    study = optuna.create_study(study_name=study_name, direction="maximize", pruner=pruner)
+    mlflow_callback = MLflowCallback(tracking_uri=mlflow.get_tracking_uri(), metric_name="f1")
     study.optimize(
         lambda trial: train.objective(params, trial),
         n_trials=num_trials,
@@ -99,9 +98,7 @@ def train_model(
 
         # Log artifacts
         with tempfile.TemporaryDirectory() as dp:
-            utils.save_dict(
-                vars(artifacts["params"]), Path(dp, "params.json"), cls=NumpyEncoder
-            )
+            utils.save_dict(vars(artifacts["params"]), Path(dp, "params.json"), cls=NumpyEncoder)
             utils.save_dict(performance, Path(dp, "performance.json"))
             torch.save(artifacts["model"].state_dict(), Path(dp, "model.pt"))
             mlflow.log_artifacts(dp)
@@ -136,9 +133,7 @@ def performance(run_id):
     return performance
 
 
-def load_artifacts(
-    run_id: str, device: torch.device = torch.device("cpu"), best_f1=True
-) -> Dict:
+def load_artifacts(run_id: str, device: torch.device = torch.device("cpu"), best_f1=True) -> Dict:
     """Load artifacts for current model.
 
     Args:
