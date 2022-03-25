@@ -1,0 +1,14 @@
+{
+    "seed": 1234,
+    "cuda": false,
+    "shuffle": true,
+    "subset": null,
+    "train_size": 0.7,
+    "batch_size": 128,
+    "hidden_dim": 19,
+    "dropout_p": 0.4917666525594221,
+    "lr": 0.0003912080773394344,
+    "num_epochs": 200,
+    "patience": 10,
+    "num_samples": 70
+}
