@@ -19,7 +19,7 @@ class Trainer:
     def __init__(
         self,
         model: nn.Module,
-        device: torch.device = torch.devie("cpu"),
+        device: torch.device = torch.device("cpu"),
         loss_fn=None,
         optimizer=None,
         scheduler=None,
@@ -58,7 +58,7 @@ class Trainer:
 
         return loss
 
-    def eval_step(self, dataloader: torch.utils.data.Dataloader):
+    def eval_step(self, dataloader: torch.utils.data.DataLoader):
         """Evaluation (val/test) step
         Args:
             dataloader : torch.dataloader to load batches from
@@ -145,7 +145,7 @@ class Trainer:
 
             # Pruning based on the intemediate valus
             if self.trial:
-                self.trail.report(val_loss, epoch)
+                self.trial.report(val_loss, epoch)
                 if self.trial.should_prune():
                     print("failure trials pruned!")
                     raise optuna.TrialPruned()
@@ -199,9 +199,7 @@ def train(params: Namespace = None, trial: optuna.trial._trial.Trial = None) -> 
     train_dataloader = train_dataset.get_dataloader(batch_size=params.batch_size)
     val_dataloader = val_dataset.get_dataloader(batch_size=params.batch_size)
 
-    model = models.initialize_model(
-        params=params, num_classes=3, device=torch.device("cpu")
-    )
+    model = models.initialize_model(device=torch.device("cpu"))
 
     # Trainer module
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)

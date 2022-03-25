@@ -20,7 +20,7 @@ class ANN_model(nn.Module):
 
 
 # initialize model
-def initialize_model(device=torch.devcie("cpu")):
+def initialize_model(device=torch.device("cpu")):
     model = ANN_model(
         input_dim=4,
         hidden_dim=10,
