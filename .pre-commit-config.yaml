@@ -1,0 +1,20 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: trailing-whitespace
+    -   id: check-yaml
+        exclude: "mkdocs.yml"
+    -   id: check-added-large-files
+        args: ['--maxkb=1000']
+    -   id: check-ast
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: detect-aws-credentials
+    -   id: detect-private-key
+
+-   repo: https://github.com/asottile/pyupgrade  # update python syntax
+    rev: v2.29.0
+    hooks:
+    -   id: pyupgrade
+        args: [--py36-plus]

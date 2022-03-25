@@ -6,8 +6,8 @@
   "train_size": 0.7,
   "batch_size": 128,
   "hidden_dim": 18,
-  "dropout_p": 0.3234824010142044,
-  "lr": 0.00012812683146894914,
+  "dropout_p": 0.5038430488862331,
+  "lr": 0.0002892481692139745,
   "num_epochs": 200,
   "patience": 10,
   "num_samples": 70

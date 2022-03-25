@@ -2,9 +2,9 @@ import logging
 import sys
 from pathlib import Path
 
-from rich.logging import RichHandler
 import mlflow
 import pretty_errors
+from rich.logging import RichHandler
 
 # Repo
 AUTHOR = "NuwanCW"

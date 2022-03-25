@@ -3,32 +3,31 @@ import os
 import tempfile
 import warnings
 from argparse import Namespace
-
 # from datetime import datetime
 from pathlib import Path
 from typing import Dict  # , Optional
+
 import mlflow
 import optuna
-
 # import pandas as pd
 import torch
-from config import config
-from config.config import logger
+import typer
 from mlflow.tracking import MlflowClient
-
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
-from iris import models, predict, train, utils
 
-# import typer
-
+from config import config
+from config.config import logger
+from iris import data, models, predict, train, utils
 
 # # Ignore warning
 warnings.filterwarnings("ignore")
 # Initialize Typer CLI app
+app = typer.Typer()
 
 
+@app.command()
 def optimize(
     params_fp: Path = Path(config.CONFIG_DIR, "params.json"),
     study_name="optimization",
@@ -64,6 +63,7 @@ def optimize(
     logger.info(json.dumps(params, indent=2, cls=NumpyEncoder))
 
 
+@app.command()
 def train_model(
     params_fp: Path = Path(config.CONFIG_DIR, "params.json"),
     experiment_name="best",
@@ -111,7 +111,8 @@ def train_model(
             utils.save_dict(performance, Path(config.CONFIG_DIR, "performance.json"))
 
 
-def predict_tags(text, run_id):
+@app.command()
+def predict_iris(text, run_id):
     # Predict
     artifacts = load_artifacts(run_id=run_id)
     text = [[float(i) for i in t.split(",")] for t in [text]]
@@ -121,12 +122,14 @@ def predict_tags(text, run_id):
     return prediction
 
 
+@app.command()
 def params(run_id):
     params = vars(load_artifacts(run_id=run_id, best_f1=False)["params"])
     logger.info(json.dumps(params, indent=2))
     return params
 
 
+@app.command()
 def performance(run_id):
     performance = load_artifacts(run_id=run_id, best_f1=False)["performance"]
     logger.info(json.dumps(performance, indent=2))
@@ -169,7 +172,7 @@ def load_artifacts(
     performance = utils.load_dict(filepath=Path(local_dir, "performance.json"))
 
     # Initialize model
-    model = models.initialize_model(num_classes=3, params=params)
+    model = models.initialize_model()
     model.load_state_dict(model_state)
     # print(params)
     return {
