@@ -2,9 +2,9 @@ import numpy as np
 import torch
 from sklearn.metrics import precision_recall_fscore_support
 
-# from snorkel.slicing import PandasSFApplier, slicing_function
-
 from iris import data, train
+
+# from snorkel.slicing import PandasSFApplier, slicing_function
 
 
 def get_metrics(

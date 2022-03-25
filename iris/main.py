@@ -1,6 +1,5 @@
-from iris import data, models, predict, train, utils
-
 import json
+import os
 import tempfile
 import warnings
 from argparse import Namespace
@@ -8,22 +7,21 @@ from argparse import Namespace
 # from datetime import datetime
 from pathlib import Path
 from typing import Dict  # , Optional
-
 import mlflow
 import optuna
 
 # import pandas as pd
 import torch
-
-# import typer
+from config import config
+from config.config import logger
+from mlflow.tracking import MlflowClient
 
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
-from mlflow.tracking import MlflowClient
-import os
-from config import config
-from config.config import logger
+from iris import models, predict, train, utils
+
+# import typer
 
 
 # # Ignore warning

@@ -1,18 +1,23 @@
 # iris/data.py
 # Data processing
 
-import json
-from argparse import Namespace
-from pathlib import Path
-from re import X
+# import json
+# from argparse import Namespace
+# from pathlib import Path
+
+# from re import X
 from typing import List
+
 import numpy as np
-import pandas as pd
+
+# import pandas as pd
 import torch
-from sklearn.model_selection import train_test_split
-from config import config
-from iris import utils
+
+# from config import config
+# from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Dataset
+
+# from iris import utils
 
 TRAIN_SIZ = 0.3
 

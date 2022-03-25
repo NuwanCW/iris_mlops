@@ -2,16 +2,19 @@
 import json
 from argparse import Namespace
 from typing import Dict, Tuple
+
 import numpy as np
 import optuna
 import pandas as pd
 import torch
 import torch.nn as nn
-from sklearn.preprocessing import LabelEncoder
-from config import config
+
+# from config import config
 from config.config import logger
-from iris import data, eval, models, utils
 from numpyencoder import NumpyEncoder
+from sklearn.preprocessing import LabelEncoder
+
+from iris import data, eval, models, utils
 
 lr = 1e-2
 
