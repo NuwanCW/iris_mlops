@@ -20,7 +20,6 @@ venv:
 # Styling
 .PHONY: style
 style:
-	black .
 	flake8
 	isort .
 
@@ -32,3 +31,8 @@ clean: style
 	find . | grep -E ".pytest_cache" | xargs rm -rf
 	find . | grep -E ".ipynb_checkpoints" | xargs rm -rf
 	rm -f .coverage
+
+# Test
+.PHONY: test
+test:
+	pytest -m "not training"

@@ -12,3 +12,28 @@ repos:
     -   id: check-merge-conflict
     -   id: detect-aws-credentials
     -   id: detect-private-key
+-   repo: https://gitlab.com/PyCQA/flake8
+    rev: 3.9.2
+    hooks:
+    -   id: flake8
+        args: ['--ignore=E501,E203,W292']
+-   repo: https://github.com/PyCQA/isort
+    rev: 5.9.3
+    hooks:
+    -   id: isort
+        args: []
+        files: .
+- repo: local
+  hooks:
+    - id: test
+      name: test
+      entry: make
+      args: ["test"]
+      language: system
+      pass_filenames: false
+    - id: clean
+      name: clean
+      entry: make
+      args: ["clean"]
+      language: system
+      pass_filenames: false
