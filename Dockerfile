@@ -17,10 +17,16 @@ COPY iris iris
 COPY app app
 COPY data data
 COPY config config
-COPY stores stores
+COPY store store
 
 # Export ports
 EXPOSE 5004
 
 # Start app
-ENTRYPOINT ["gunicorn", "-c", "app/gunicorn.py", "-k", "uvicorn.workers.UvicornWorker", "app.api:app"]
+#ENTRYPOINT ["gunicorn", "-c", "app/gunicorn.py", "-k", \
+# "uvicorn.workers.UvicornWorker", "app.api:app"]
+
+ENTRYPOINT ["gunicorn", "-c", "app/gunicorn.py", "-k", "uvicorn.workers.UvicornWorker", "-b :5004", "app.api:app"]
+#to Run execute below , make sure to set environment variables to set prior->
+# docker run --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY \
+#  --env MLFLOW_S3_ENDPOINT_URL --env MLFLOW_TRACKING_URI -p 5004:5004 --name iris iris:latest
