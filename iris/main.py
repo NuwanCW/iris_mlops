@@ -3,26 +3,23 @@ import os
 import tempfile
 import warnings
 from argparse import Namespace
-
 # from datetime import datetime
 from pathlib import Path
 from typing import Dict  # , Optional
 
 import mlflow
 import optuna
-
 # import pandas as pd
 import torch
 import typer
 from mlflow.tracking import MlflowClient
-
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
 
 from config import config
 from config.config import logger
-from iris import data, models, predict, train, utils
+from iris import models, predict, train, utils
 
 # # Ignore warning
 warnings.filterwarnings("ignore")
@@ -139,6 +136,7 @@ def load_artifacts(run_id: str, device: torch.device = torch.device("cpu"), best
     Args:
         run_id (str): ID of the model run to load artifacts.
         device (torch.device): Device to run model on. Defaults to CPU.
+        if best_f1 is True then the best run will be used
 
     Returns:
         Artifacts needed for inference.

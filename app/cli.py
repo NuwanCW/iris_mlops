@@ -4,26 +4,23 @@ import os
 import tempfile
 import warnings
 from argparse import Namespace
-
 # from datetime import datetime
 from pathlib import Path
 from typing import Dict  # , Optional
 
 import mlflow
 import optuna
-
 # import pandas as pd
 import torch
 import typer
 from mlflow.tracking import MlflowClient
-
 # from feast import FeatureStore
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
 
 from config import config
 from config.config import logger
-from iris import data, models, predict, train, utils
+from iris import models, predict, train, utils
 
 # # Ignore warning
 warnings.filterwarnings("ignore")

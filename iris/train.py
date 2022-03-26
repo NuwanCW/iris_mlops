@@ -8,12 +8,11 @@ import optuna
 import pandas as pd
 import torch
 import torch.nn as nn
-
-# from config import config
-from config.config import logger
 from numpyencoder import NumpyEncoder
 from sklearn.preprocessing import LabelEncoder
 
+# from config import config
+from config.config import logger
 from iris import data, eval, models, utils
 
 lr = 1e-2
