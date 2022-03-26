@@ -1,17 +1,10 @@
 # tests/tagifai/test_data.py
 # Test tagifai/data.py components.
 
-import itertools
-import tempfile
-from argparse import Namespace
-from collections import Counter
-from pathlib import Path
 import pandas as pd
 import numpy as np
 import pytest
-
-from config import config
-from iris import data, utils
+from iris import data
 
 
 def test_train_test_split():

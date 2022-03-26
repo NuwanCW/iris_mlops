@@ -17,12 +17,7 @@ repos:
     hooks:
     -   id: flake8
         args: ['--ignore=E501,E203,W292']
--   repo: https://github.com/PyCQA/isort
-    rev: 5.9.3
-    hooks:
-    -   id: isort
-        args: []
-        files: .
+
 - repo: local
   hooks:
     - id: test

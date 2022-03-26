@@ -20,8 +20,7 @@ venv:
 # Styling
 .PHONY: style
 style:
-	flake8
-	isort .
+	flake8 --ignore=E501,E203,W292
 
 # Cleaning
 .PHONY: clean
